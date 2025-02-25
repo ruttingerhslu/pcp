@@ -25,3 +25,5 @@ int main(int argc, char** argv) {
     print(myStack);
     return (EXIT_SUCCESS);
 }
+
+// Nicht nötig eine `clear`- Methode zu schreiben, da Werte sowieso immer kopiert werden.
