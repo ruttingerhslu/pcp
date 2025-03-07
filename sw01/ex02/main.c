@@ -8,9 +8,6 @@
 #include <stdlib.h>
 #include "stack.h"
 
-/*
- * 
- */
 int main(int argc, char** argv) {
     stack myStack = init();
     printf("size(myStack) = %i\n", size(myStack));

@@ -25,6 +25,7 @@ stack pop(stack s);
 void print(stack s);
 int isEmpty(stack s);
 int size(stack s);
+stack clear(stack s);
 
 #endif	/* STACK_H */
 
