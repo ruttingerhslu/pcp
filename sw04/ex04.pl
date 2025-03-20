@@ -53,33 +53,31 @@ solve(Type, ID) :-
     atomic_list_concat([URL, '/', ID], GET_URL),
     http_get(GET_URL, Data, [json_object(term)]),
     solve(Type, Data, Solution), 
-    post(Type, Solution, ID).
+    http_post(
+        URL, 
+        json(_{solution: Solution, id: ID}), _ , []
+    ).
 
 solve(relationship, json([_, firstPerson=X, relationship=Type, secondPerson=Y]), Solution) :-
     ( call(Type, X, Y) -> Solution = true ; Solution = false ).
 
 solve(sudoku, json([_, sudoku=Sudoku]), Solution):-     
-    replace_all_lists(Sudoku, Puzzle),
+    replace_in_lists(Sudoku, Puzzle),
     Puzzle = [A, B, C, D, E, F, G, H, I],
     sudoku([A, B, C, D, E, F, G, H, I]),
     !,
     Solution = Puzzle.
 
-post(Type, Solution, ID) :-
-    atom_concat('http://localhost:16316/problem/', Type, URL),
-    http_post(
-        URL, 
-        json(_{solution: Solution, id: ID}), _ , []).
-
-replace_all([], []).
-replace_all([H|A], [H|B]) :-
+replace_zeros([], []).
+replace_zeros([H|T1], [H|T2]) :-
     H \= 0,
     !,
-    replace_all(A, B).
-replace_all([0|A], [_|B]) :-
-    replace_all(A, B).
+    replace_zeros(T1, T2).
+replace_zeros([0|T1], [_|T2]) :-
+    replace_zeros(T1, T2).
 
-replace_all_lists([], []).
-replace_all_lists([H|A], [R|B]) :-
-    replace_all(H, R),
-    replace_all_lists(A, B).
+replace_in_lists([], []).
+replace_in_lists([H|T1], [R|T2]) :-
+    replace_zeros(H, R),
+    replace_in_lists(T1, T2).
+
