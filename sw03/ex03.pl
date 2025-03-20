@@ -18,6 +18,15 @@ del([H | T], X, [H | T1]) :-
 
 % del([a, b, c, a, d, a], a, L).
 
+del2([], _, []).
+del2([X | T], X, T1) :-
+    del2(T, X, T1), !.
+
+del2([H | T], X, [H | T1]) :-
+    del2(T, X, T1).
+
+% del2([a, b, c, a, d, a], a, L).
+
 % c)
 mem_d(X, L) :- del(L, X, L1), L \= L1.
 
@@ -32,3 +41,4 @@ rev_acc([H | T], A, R) :- rev_acc(T, [H | A], R).
 
 % e)
 rev(L, R) :- rev_acc(L, [], R).
+% rev([a, b, c, d], L).
